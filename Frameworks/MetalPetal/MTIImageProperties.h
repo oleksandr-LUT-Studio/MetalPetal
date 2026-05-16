@@ -8,6 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <ImageIO/ImageIO.h>
 #import <CoreGraphics/CoreGraphics.h>
+#if __has_include(<MetalPetal/MetalPetal.h>)
+#import <MetalPetal/MTIHDRDetection.h>
+#else
+#import "MTIHDRDetection.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,6 +48,9 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, readonly) NSUInteger displayHeight;
 
 @property (nonatomic, copy, readonly) NSDictionary *properties;
+
+/// HDR/Log classification derived from the image's color space and bit depth.
+@property (nonatomic, readonly) MTIHDRContentType hdrContentType;
 
 @end
 

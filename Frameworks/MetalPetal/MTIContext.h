@@ -29,8 +29,17 @@ __attribute__((objc_subclassing_restricted))
 
 @property (nonatomic, copy, nullable) NSDictionary<CIContextOption,id> *coreImageContextOptions;
 
-/// Default pixel format for intermediate textures.
+/// Default pixel format for intermediate textures. Defaults to `MTLPixelFormatBGRA8Unorm`.
+/// For HDR pipelines set this to `MTLPixelFormatRGBA16Float` (or any other wide-format) so that
+/// kernels without an explicit output format do not clamp HDR content to 8-bit SDR.
 @property (nonatomic) MTLPixelFormat workingPixelFormat;
+
+/// When set to `YES`, input promises (CVPixelBuffer / CGImage) that carry HDR or Log content
+/// will be loaded into `MTLPixelFormatRGBA16Float` textures preserving their source colorspace,
+/// instead of being truncated to 8-bit BGRA / sRGB. Defaults to `NO` for backward compatibility.
+/// Setting this to `YES` is typically combined with setting `workingPixelFormat` to
+/// `MTLPixelFormatRGBA16Float`.
+@property (nonatomic) BOOL preservesHDRContent;
 
 /// Whether the render graph optimization is enabled. The default value for this property is NO.
 @property (nonatomic) BOOL enablesRenderGraphOptimization;

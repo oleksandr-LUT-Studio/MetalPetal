@@ -13,6 +13,10 @@
     return self;
 }
 
+- (MTIHDRContentType)hdrContentType {
+    return MTIHDRContentTypeFromCGColorSpace(_colorSpace, _bitsPerComponent, _floatComponents);
+}
+
 - (void)dealloc {
     CGColorSpaceRelease(_colorSpace);
 }

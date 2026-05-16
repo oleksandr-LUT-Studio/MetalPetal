@@ -63,6 +63,7 @@
 #import "MTIImageOrientation.h"
 #import "MTIImagePromise.h"
 #import "MTIImagePromiseDebug.h"
+#import "MTIHDRDetection.h"
 #import "MTIImageProperties.h"
 #import "MTIImageRenderingContext.h"
 #import "MTILayer.h"
