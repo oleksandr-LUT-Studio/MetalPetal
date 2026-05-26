@@ -15,6 +15,7 @@ BOOL MTIHDRContentTypeIsHighDynamicRange(MTIHDRContentType type) {
         case MTIHDRContentTypeHDR_PQ:
         case MTIHDRContentTypeHDR_HLG:
         case MTIHDRContentTypeLog_Apple:
+        case MTIHDRContentTypeLog_AppleLog2:
         case MTIHDRContentTypeLog_Other:
             return YES;
     }
@@ -40,9 +41,14 @@ static MTIHDRContentType MTIHDRContentTypeFromCVLogTransferFunctionString(CFStri
     if (logTF == NULL) {
         return MTIHDRContentTypeUnknown;
     }
-    if (@available(iOS 17.0, tvOS 17.0, macOS 14.0, macCatalyst 17.0, *)) {
+    if (@available(iOS 17.2, tvOS 17.2, macOS 14.2, macCatalyst 17.2, *)) {
         if (CFEqual(logTF, kCVImageBufferLogTransferFunction_AppleLog)) {
             return MTIHDRContentTypeLog_Apple;
+        }
+    }
+    if (@available(iOS 26.0, tvOS 26.0, macOS 26.0, macCatalyst 26.0, *)) {
+        if (CFEqual(logTF, kCVImageBufferLogTransferFunction_AppleLog2)) {
+            return MTIHDRContentTypeLog_AppleLog2;
         }
     }
     return MTIHDRContentTypeLog_Other;
@@ -57,7 +63,7 @@ MTIHDRContentType MTIHDRContentTypeFromCVPixelBuffer(CVPixelBufferRef pixelBuffe
     if (detected != MTIHDRContentTypeUnknown) {
         return detected;
     }
-    if (@available(iOS 17.0, tvOS 17.0, macOS 14.0, macCatalyst 17.0, *)) {
+    if (@available(iOS 17.2, tvOS 17.2, macOS 14.2, macCatalyst 17.2, *)) {
         CFTypeRef logTF = CVBufferGetAttachment(pixelBuffer, kCVImageBufferLogTransferFunctionKey, NULL);
         if (logTF != NULL) {
             return MTIHDRContentTypeFromCVLogTransferFunctionString((CFStringRef)logTF);
@@ -142,7 +148,7 @@ MTIHDRContentType MTIHDRContentTypeFromAVAssetTrack(AVAssetTrack *track) {
         if (detected != MTIHDRContentTypeUnknown) {
             return detected;
         }
-        if (@available(iOS 17.0, tvOS 17.0, macOS 14.0, macCatalyst 17.0, *)) {
+        if (@available(iOS 17.2, tvOS 17.2, macOS 14.2, macCatalyst 17.2, *)) {
             CFTypeRef logTF = CFDictionaryGetValue(ext, kCMFormatDescriptionExtension_LogTransferFunction);
             if (logTF != NULL) {
                 return MTIHDRContentTypeFromCVLogTransferFunctionString((CFStringRef)logTF);
@@ -176,6 +182,7 @@ CGColorSpaceRef MTIRecommendedCGColorSpaceForHDRContentType(MTIHDRContentType ty
             case MTIHDRContentTypeHDR_HLG:
                 return CGColorSpaceCreateWithName(kCGColorSpaceITUR_2100_HLG);
             case MTIHDRContentTypeLog_Apple:
+            case MTIHDRContentTypeLog_AppleLog2:
                 return CGColorSpaceCreateWithName(kCGColorSpaceExtendedLinearITUR_2020);
             case MTIHDRContentTypeExtendedSDR:
                 return CGColorSpaceCreateWithName(kCGColorSpaceExtendedLinearSRGB);

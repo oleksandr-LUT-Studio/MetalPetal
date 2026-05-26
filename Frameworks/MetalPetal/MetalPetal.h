@@ -38,6 +38,7 @@
 #import "MTIRenderCommand.h"
 #import "MTIRenderPipelineKernel.h"
 #import "MTIAlphaType.h"
+#import "MTIAVAssetExport.h"
 #import "MTIBlendModes.h"
 #import "MTIBuffer.h"
 #import "MTICVMetalIOSurfaceBridge.h"

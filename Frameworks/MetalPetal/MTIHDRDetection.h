@@ -25,8 +25,10 @@ typedef NS_ENUM(NSInteger, MTIHDRContentType) {
     MTIHDRContentTypeHDR_PQ,
     /// HDR with HLG transfer (ITU-R BT.2100 HLG), typically BT.2020 primaries.
     MTIHDRContentTypeHDR_HLG,
-    /// Apple Log transfer function (iOS 17+).
+    /// Apple Log transfer function (iOS 17.2+).
     MTIHDRContentTypeLog_Apple,
+    /// Apple Log 2 transfer function (iOS 26+).
+    MTIHDRContentTypeLog_AppleLog2,
     /// Other Log encoding (S-Log, V-Log, ARRI LogC, Canon C-Log). Detected heuristically; never relied upon.
     MTIHDRContentTypeLog_Other
 };
